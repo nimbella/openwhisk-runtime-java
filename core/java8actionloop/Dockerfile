@@ -35,7 +35,7 @@ FROM adoptopenjdk/openjdk8-openj9:x86_64-ubuntu-jdk8u222-b10_openj9-0.15.1
 ARG GO_PROXY_BUILD_FROM=release
 
 # Add nim
-RUN curl https://preview-apigcp.nimbella.io/remoteBuild/nim-install-linux.sh | bash
+RUN curl https://apigcp.nimbella.io/downloads/nim/nim-install-linux.sh | bash
 
 RUN rm -rf /var/lib/apt/lists/* \
     && apt-get clean \
