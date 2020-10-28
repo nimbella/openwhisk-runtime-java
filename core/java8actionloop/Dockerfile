@@ -72,7 +72,7 @@ ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
 # Add nim
-RUN curl https://apigcp.nimbella.io/downloads/nim/nim-install-linux.sh | bash
+RUN curl https://preview-apigcp.nimbella.io/remoteBuild/nim-install-linux.sh | bash
 
 ADD https://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.8.5/gson-2.8.5.jar /usr/java/lib/gson-2.8.5.jar
 ADD lib/src/Launcher.java /usr/java/src/Launcher.java
