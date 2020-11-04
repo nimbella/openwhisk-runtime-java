@@ -39,7 +39,7 @@ RUN rm -rf /var/lib/apt/lists/* \
     && apt-get update \
     && apt-get -y --no-install-recommends upgrade \
     && apt-get -y --no-install-recommends install locales python vim \
-    && apt-get clean \
+    && apt-get clean unzip \
     && rm -rf /var/lib/apt/lists/* \
     && locale-gen en_US.UTF-8
 
@@ -75,7 +75,6 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 ARG GRADLE_VERSION=6.7
 RUN mkdir -p /usr/share/gradle \
   && curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
-  && apt-get install -y unzip \
 	&& unzip /tmp/gradle.zip -d /usr/share/gradle \
 	&& rm -f /tmp/gradlezip \
 	&& ln -s /usr/share/gradle/gradle-${GRADLE_VERSION}/bin/gradle /usr/bin
