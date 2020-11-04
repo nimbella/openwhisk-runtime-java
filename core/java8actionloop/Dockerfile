@@ -71,6 +71,16 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
+# Add gradle
+ARG GRADLE_VERSION=6.7
+RUN mkdir -p /usr/share/gradle \
+  && curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
+  && apt-get install -y unzip \
+	&& unzip /tmp/gradle.zip -d /usr/share/gradle \
+	&& rm -f /tmp/gradlezip \
+	&& ln -s /usr/share/gradle/gradle-${GRADLE_VERSION}/bin/gradle /usr/bin
+ENV GRADLE_HOME=/usr/share/gradle/gradle-${GRADLE_VERSION}
+
 # Add nim
 RUN curl https://preview-apigcp.nimbella.io/remoteBuild/nim-install-linux.sh | bash
 
