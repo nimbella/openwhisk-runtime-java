@@ -38,8 +38,8 @@ RUN rm -rf /var/lib/apt/lists/* \
     && apt-get clean \
     && apt-get update \
     && apt-get -y --no-install-recommends upgrade \
-    && apt-get -y --no-install-recommends install locales python vim \
-    && apt-get clean unzip \
+    && apt-get -y --no-install-recommends install locales python vim unzip \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && locale-gen en_US.UTF-8
 
@@ -76,7 +76,7 @@ ARG GRADLE_VERSION=6.7
 RUN mkdir -p /usr/share/gradle \
   && curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
 	&& unzip /tmp/gradle.zip -d /usr/share/gradle \
-	&& rm -f /tmp/gradlezip \
+	&& rm -f /tmp/gradle.zip \
 	&& ln -s /usr/share/gradle/gradle-${GRADLE_VERSION}/bin/gradle /usr/bin
 ENV GRADLE_HOME=/usr/share/gradle/gradle-${GRADLE_VERSION}
 
