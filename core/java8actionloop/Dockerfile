@@ -43,7 +43,7 @@ RUN rm -rf /var/lib/apt/lists/* \
     && apt-get clean \
     && apt-get update \
     && apt-get -y --no-install-recommends upgrade \
-    && apt-get -y --no-install-recommends install locales python vim \
+    && apt-get -y --no-install-recommends install locales python vim unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && locale-gen en_US.UTF-8
@@ -63,6 +63,30 @@ WORKDIR /javaAction
 COPY --from=builder_source /bin/proxy /bin/proxy_source
 COPY --from=builder_release /bin/proxy /bin/proxy_release
 RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
+
+# Add maven
+ARG MAVEN_VERSION=3.6.3
+ARG USER_HOME_DIR="/root"
+ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
+RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
+ && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+ && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
+ && rm -f /tmp/apache-maven.tar.gz \
+ && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+ENV MAVEN_HOME /usr/share/maven
+ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
+
+# Add gradle
+ARG GRADLE_VERSION=6.7
+RUN mkdir -p /usr/share/gradle \
+  && curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
+	&& unzip /tmp/gradle.zip -d /usr/share/gradle \
+	&& rm -f /tmp/gradle.zip \
+	&& ln -s /usr/share/gradle/gradle-${GRADLE_VERSION}/bin/gradle /usr/bin
+ENV GRADLE_HOME=/usr/share/gradle/gradle-${GRADLE_VERSION}
+
+# Add nim
+RUN curl https://apigcp.nimbella.io/downloads/nim/nim-install-linux.sh | bash
 
 ADD https://search.maven.org/remotecontent?filepath=com/google/code/gson/gson/2.8.5/gson-2.8.5.jar /usr/java/lib/gson-2.8.5.jar
 ADD lib/src/Launcher.java /usr/java/src/Launcher.java
