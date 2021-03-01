@@ -17,8 +17,8 @@
 
 # build go proxy from source
 FROM golang:1.15 AS builder_source
-ARG GO_PROXY_GITHUB_USER=apache
-ARG GO_PROXY_GITHUB_BRANCH=master
+ARG GO_PROXY_GITHUB_USER=nimbella-corp
+ARG GO_PROXY_GITHUB_BRANCH=dev
 RUN git clone --branch ${GO_PROXY_GITHUB_BRANCH} \
    https://github.com/${GO_PROXY_GITHUB_USER}/openwhisk-runtime-go /src ;\
    cd /src ; env GO111MODULE=on CGO_ENABLED=0 go build main/proxy.go && \
@@ -37,7 +37,7 @@ RUN curl -sL \
 FROM adoptopenjdk/openjdk8-openj9:x86_64-ubuntu-jdk8u262-b10_openj9-0.21.0
 
 # select the builder to use
-ARG GO_PROXY_BUILD_FROM=release
+ARG GO_PROXY_BUILD_FROM=source
 
 RUN rm -rf /var/lib/apt/lists/* \
     && apt-get clean \
